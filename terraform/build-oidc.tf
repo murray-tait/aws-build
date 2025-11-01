@@ -25,7 +25,7 @@ resource "aws_iam_role" "build" {
 
 resource "aws_iam_role_policy" "build" {
   name = "Terraform_Backend-build"
-  role = aws_iam_role.terraform_github.id
+  role = aws_iam_role.build.id
 
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
