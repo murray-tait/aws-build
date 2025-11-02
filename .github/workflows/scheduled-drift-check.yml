@@ -14,7 +14,6 @@ permissions:
 
 env:
   AWS_PROFILE_TERRAFORM_STATE: "973963482762_TerraformStateAccess"
-
 jobs:
   terraform-plan:
     name: "Terraform Plan"
@@ -112,6 +111,8 @@ jobs:
           echo '```' >> $GITHUB_OUTPUT
           echo "</details>" >> $GITHUB_OUTPUT
           echo "${delimiter}" >> $GITHUB_OUTPUT
+        output:
+          summary: $GITHUB_OUTPUT
 
       # Publish Terraform Plan as task summary
       - name: Publish Terraform Plan to Task Summary
