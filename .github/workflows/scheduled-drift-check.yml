@@ -32,9 +32,6 @@ jobs:
       tfplanExitCode: ${{ steps.terraform-plan.outputs.exitcode }}
 
     steps:
-      - name: Install utils
-        run: sudo apt-get update && sudo apt-get -y install --no-install-recommends crudini python3-iniparse
-
       - name: Retrieve AWS Credentials
         id: creds
         uses: aws-actions/configure-aws-credentials@v4.2.1
