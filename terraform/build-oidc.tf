@@ -61,3 +61,9 @@ resource "aws_iam_role_policy" "build" {
     ]
   })
 }
+
+resource "aws_iam_role_policy_attachment" "build_admin_access" {
+  role       = aws_iam_role.build.name
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+}
+
