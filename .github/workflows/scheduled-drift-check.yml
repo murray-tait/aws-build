@@ -111,7 +111,7 @@ jobs:
           echo '```' >> $GITHUB_OUTPUT
           echo "</details>" >> $GITHUB_OUTPUT
           echo "${delimiter}" >> $GITHUB_OUTPUT
-        output:
+        outputs:
           summary: $GITHUB_OUTPUT
 
       # Publish Terraform Plan as task summary
