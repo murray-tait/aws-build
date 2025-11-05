@@ -27,7 +27,6 @@ jobs:
     env:
       AWS_ROLE_TO_ASSUME: ${{ vars.AWS_ROLE_TO_ASSUME}}
       AWS_REGION: ${{ vars.AWS_REGION }}
-      TERRAFORM_VERSION: ${{ 1.12.2 }}
 
     outputs:
       tfplanExitCode: ${{ steps.terraform-plan.outputs.exitcode }}
@@ -46,9 +45,8 @@ jobs:
         uses: murray-tait/gha/.github/actions/plan@main
         with:
           checkout-ref: refs/tags/deployment/main
-          terraform-version: "1.12.2"
+          terraform-version: 1.12.2
 
-      # If changes are detected, create a new issue
       - name: Publish Drift Report
         if: steps.terraform-plan.outputs.exitcode == 2
         uses: actions/github-script@v7
