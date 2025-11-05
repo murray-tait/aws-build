@@ -20,7 +20,7 @@ env:
   AWS_PROFILE_TERRAFORM_STATE: "973963482762_TerraformStateAccess"
 
 jobs:
-  validate-input-and-set-environment:
+  prepare:
     runs-on: "ubuntu-latest"
     outputs:
       current_env: main
@@ -62,8 +62,7 @@ jobs:
 
   terraform-plan:
     name: "Terraform Plan"
-    if: ${{ github.event_name == 'workflow_dispatch' && needs.validate-input-and-set-environment.outputs.current_env != 'dev' }}
-    needs: [validate-input-and-set-environment]
+    needs: [prepare]
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -150,7 +149,7 @@ jobs:
           path: terraform/tfplan
 
   deploy:
-    needs: [validate-input-and-set-environment, terraform-plan]
+    needs: [prepare, terraform-plan]
     environment: main
     permissions:
       id-token: write
