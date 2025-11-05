@@ -34,7 +34,7 @@ jobs:
     steps:
       - name: Configure AWS credentials from AWS account
         id: terraform-state-creds
-        uses: murray-tait/gha/configure-aws-credentials-file@main
+        uses: murray-tait/gha/.github/actions/configure-aws-credentials-file@main
         with:
           role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME }}
           aws-profile: 973963482762_TerraformStateAccess
