@@ -43,7 +43,7 @@ jobs:
 
       - name: Plan for drift detection
         id: terraform-plan
-        uses: uses: murray-tait/gha/.github/actions/plan@main
+        uses: murray-tait/gha/.github/actions/plan@main
         with:
           checkout-ref: refs/tags/deployment/main
           terraform-version 1.12.2
