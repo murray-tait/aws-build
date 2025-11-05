@@ -45,7 +45,6 @@ jobs:
         uses: murray-tait/gha/.github/actions/plan@main
         with:
           checkout-ref: refs/tags/deployment/main
-          terraform-version: 1.12.2
 
       - name: Publish Drift Report
         if: steps.terraform-plan.outputs.exitcode == 2
