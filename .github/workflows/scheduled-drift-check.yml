@@ -51,3 +51,4 @@ jobs:
         uses: murray-tait/gha/.github/actions/drift-detection@main
         with:
           mentions: "@murray-tait"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
