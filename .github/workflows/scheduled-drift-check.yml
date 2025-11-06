@@ -1,4 +1,4 @@
-name: "Terraform Configuration Drift Detection"
+name: "Drift Detection"
 
 run-name: >
   ${{ github.event_name == 'workflow_dispatch' && 'Manual drift detection' || 'Scheduled drift detection' }}
@@ -12,8 +12,6 @@ permissions:
   contents: read
   issues: write
 
-env:
-  AWS_PROFILE_TERRAFORM_STATE: "973963482762_TerraformStateAccess"
 jobs:
   terraform-plan:
     name: "Terraform Plan"
@@ -27,18 +25,16 @@ jobs:
     env:
       AWS_ROLE_TO_ASSUME: ${{ vars.AWS_ROLE_TO_ASSUME}}
       AWS_REGION: ${{ vars.AWS_REGION }}
-
-    outputs:
-      tfplanExitCode: ${{ steps.terraform-plan.outputs.exitcode }}
+      MENTIONS: "@murray-tait"
 
     steps:
       - name: Configure AWS credentials from AWS account
         id: terraform-state-creds
         uses: murray-tait/gha/.github/actions/configure-aws-credentials-file@main
         with:
-          role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME }}
+          role-to-assume: ${{ env.AWS_ROLE_TO_ASSUME }}
           aws-profile: 973963482762_TerraformStateAccess
-          aws-region: ${{ vars.AWS_REGION }}
+          aws-region: ${{ env.AWS_REGION }}
 
       - name: Plan for drift detection
         id: terraform-plan
@@ -50,7 +46,7 @@ jobs:
         id: publish-drift
         uses: murray-tait/gha/.github/actions/drift-detection@main
         with:
-          mentions: "@murray-tait"
+          mentions: ${{ env.MENTIONS }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           drift-detected: ${{ steps.terraform-plan.outputs.drift-detected }}
           summary: ${{ steps.terraform-plan.outputs.summary }}
