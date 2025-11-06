@@ -52,4 +52,4 @@ jobs:
         with:
           mentions: "@murray-tait"
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          drift-detection: ${{ steps.terraform-plan.outputs.drift-detected }}
+          drift-detected: ${{ steps.terraform-plan.outputs.drift-detected }}
