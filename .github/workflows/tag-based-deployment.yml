@@ -74,79 +74,21 @@ jobs:
       AWS_ROLE_TO_ASSUME: ${{ vars.AWS_ROLE_TO_ASSUME}}
       AWS_REGION: ${{ vars.AWS_REGION }}
     steps:
-      - name: Retrieve AWS Credentials
-        id: creds
-        uses: aws-actions/configure-aws-credentials@v4.2.1
+      - name: Configure AWS credentials from AWS account
+        id: terraform-state-creds
+        uses: murray-tait/gha/.github/actions/configure-aws-credentials-file@main
         with:
-          role-to-assume: ${{ env.AWS_ROLE_TO_ASSUME }}
-          aws-region: ${{ env.AWS_REGION }}
-          output-credentials: true
+          role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME }}
+          aws-profile: 973963482762_TerraformStateAccess
+          aws-region: ${{ vars.AWS_REGION }}
 
-      - name: Create profile
-        run: |
-          mkdir ~/.aws
-          touch ~/.aws/credentials
-          echo "[${{ env.AWS_PROFILE_TERRAFORM_STATE }}]" >> ~/.aws/credentials
-          echo "aws_access_key_id = ${{ steps.creds.outputs.aws-access-key-id }}" >> ~/.aws/credentials
-          echo "aws_secret_access_key = ${{ steps.creds.outputs.aws-secret-access-key }}" >> ~/.aws/credentials
-          echo "aws_session_token = ${{ steps.creds.outputs.aws-session-token }}" >> ~/.aws/credentials
-
-      - name: Git checkout
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.inputs.tag || github.sha }}
-          fetch-depth: 0
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_wrapper: false
-          terraform_version: 1.12.2
-
-      - name: Terraform Init
-        id: init
-        run: terraform -chdir=./terraform init
-
-      - name: Terraform Validate
-        id: validate
-        run: terraform -chdir=./terraform validate -no-color
-
-      - name: Terraform Plan
+      - name: Plan for drift detection
         id: terraform-plan
-        run: |
-          if [ -n "${{ github.event.inputs.target }}" ]; then
-            terraform -chdir=./terraform plan -target=${{ github.event.inputs.target }} -out=tfplan
-          else
-            terraform -chdir=./terraform plan -out=tfplan
-          fi
-
-      - name: Create String Output
-        id: terraform-plan-string
-        run: |
-          TERRAFORM_PLAN=$(terraform -chdir=terraform show -no-color tfplan)
-
-          delimiter="$(openssl rand -hex 8)"
-          echo "summary<<${delimiter}" >> $GITHUB_OUTPUT
-          echo "## Terraform Plan Output" >> $GITHUB_OUTPUT
-          echo "<details><summary>Click to expand</summary>" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo '```terraform' >> $GITHUB_OUTPUT
-          echo "$TERRAFORM_PLAN" >> $GITHUB_OUTPUT
-          echo '```' >> $GITHUB_OUTPUT
-          echo "</details>" >> $GITHUB_OUTPUT
-          echo "${delimiter}" >> $GITHUB_OUTPUT
-
-      - name: Publish Terraform Plan to Task Summary
-        env:
-          SUMMARY: ${{ steps.terraform-plan-string.outputs.summary }}
-        run: |
-          echo "$SUMMARY" >> $GITHUB_STEP_SUMMARY
-
-      - name: Publish Terraform Plan
-        uses: actions/upload-artifact@v4
+        uses: murray-tait/gha/.github/actions/plan@main
         with:
-          name: tfplan
-          path: terraform/tfplan
+          checkout-ref: refs/tags/deployment/main
+          target: ${{ github.event.inputs.target }}
+          upload-plan-file: true
 
   deploy:
     needs: [prepare, terraform-plan]
