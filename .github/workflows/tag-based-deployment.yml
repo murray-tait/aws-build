@@ -1,4 +1,4 @@
-name: "Tag Based Deployment"
+name: "Deployment"
 
 run-name: >
   ${{ github.event_name == 'workflow_dispatch' && format('Manual Deploy to {0} using {1}', github.event.inputs.environment, github.event.inputs.tag) || 'Deploy to ephemeral env' }}
@@ -89,8 +89,10 @@ jobs:
           checkout-ref: refs/tags/deployment/main
           target: ${{ github.event.inputs.target }}
           upload-plan-file: true
+          deployment_environment: ${{ vars.deployment_environment }}
 
   deploy:
+    name: "Terraform Apply"
     needs: [prepare, terraform-plan]
     environment: main
     permissions:
@@ -121,3 +123,4 @@ jobs:
           checkout-ref: refs/tags/deployment/main
           github-token: ${{ secrets.GITHUB_TOKEN }}
           target: ${{ github.event.inputs.target }}
+          deployment_environment: ${{ vars.deployment_environment }}
