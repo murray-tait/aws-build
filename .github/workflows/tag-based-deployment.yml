@@ -123,5 +123,5 @@ jobs:
           checkout-ref: refs/tags/deployment/main
           github-token: ${{ secrets.GITHUB_TOKEN }}
           target: ${{ github.event.inputs.target }}
-          deployment_environment: ${{ vars.deployment_environment }}
+          deployment_environment: ${{ vars.DEPLOYMENT_ENVIRONMENT }}
           success_discord_webhook: ${{ secrets.SUCCESS_DISCORD_WEBHOOK }}
