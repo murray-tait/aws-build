@@ -124,3 +124,4 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           target: ${{ github.event.inputs.target }}
           deployment_environment: ${{ vars.deployment_environment }}
+          success_discord_webhook: ${{ secrets.SUCCESS_DISCORD_WEBHOOK }}
