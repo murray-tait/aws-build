@@ -89,7 +89,7 @@ jobs:
           checkout-ref: refs/tags/deployment/main
           target: ${{ github.event.inputs.target }}
           upload-plan-file: true
-          deployment_environment: ${{ vars.deployment_environment }}
+          deployment_environment: ${{ vars.DEPLOYMENT_ENVIRONMENT }}
 
   deploy:
     name: "Terraform Apply"
