@@ -49,4 +49,4 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           drift-detected: ${{ steps.terraform-plan.outputs.drift-detected }}
           summary: ${{ steps.terraform-plan.outputs.summary }}
-          deployment_discord_webhook: ${{ secrets.DEPLOYMENT_GITHUB_WEBHOOK }}
+          deployment_discord_webhook: ${{ secrets.DEPLOYMENT_DISCORD_WEBHOOK }}
