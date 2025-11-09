@@ -26,7 +26,6 @@ jobs:
       AWS_ROLE_TO_ASSUME: ${{ vars.AWS_ROLE_TO_ASSUME}}
       AWS_REGION: ${{ vars.AWS_REGION }}
       MENTIONS: "@murray-tait"
-
     steps:
       - name: Configure AWS credentials from AWS account
         id: terraform-state-creds
@@ -50,4 +49,4 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           drift-detected: ${{ steps.terraform-plan.outputs.drift-detected }}
           summary: ${{ steps.terraform-plan.outputs.summary }}
-          success_discord_webhook: ${{ secrets.SUCCESS_DISCORD_WEBHOOK }}
+          deployment_discord_webhook: ${{ secrets.DEPLOYMENT_GITHUB_WEBHOOK }}
