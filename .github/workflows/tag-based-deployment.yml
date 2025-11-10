@@ -90,6 +90,7 @@ jobs:
           target: ${{ github.event.inputs.target }}
           upload-plan-file: true
           deployment_environment: ${{ vars.DEPLOYMENT_ENVIRONMENT }}
+          deployment_discord_webhook: ${{ secrets.DEPLOYMENT_GITHUB_WEBHOOK }}
 
   deploy:
     name: "Terraform Apply"
