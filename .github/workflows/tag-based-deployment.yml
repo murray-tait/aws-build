@@ -21,6 +21,7 @@ env:
 
 jobs:
   prepare:
+    name: Prepare
     runs-on: "ubuntu-latest"
     outputs:
       current_env: main
@@ -86,7 +87,7 @@ jobs:
         id: terraform-plan
         uses: murray-tait/gha/.github/actions/plan@main
         with:
-          checkout-ref: refs/tags/deployment/main
+          checkout-ref: ${{ github.event.inputs.tag || github.sha }}
           target: ${{ github.event.inputs.target }}
           upload-plan-file: true
           deployment_environment: ${{ vars.DEPLOYMENT_ENVIRONMENT }}
@@ -122,7 +123,7 @@ jobs:
         id: terraform-deploy
         uses: murray-tait/gha/.github/actions/deploy@main
         with:
-          checkout-ref: refs/tags/deployment/main
+          checkout-ref: ${{ github.event.inputs.tag || github.sha }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           target: ${{ github.event.inputs.target }}
           deployment_environment: ${{ vars.DEPLOYMENT_ENVIRONMENT }}
