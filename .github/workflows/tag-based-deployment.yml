@@ -91,6 +91,7 @@ jobs:
           upload-plan-file: true
           deployment_environment: ${{ vars.DEPLOYMENT_ENVIRONMENT }}
           deployment_discord_webhook: ${{ secrets.DEPLOYMENT_GITHUB_WEBHOOK }}
+          protected-deployment: ${{ vars.PROTECTED_DEPLOYMENT }}
 
   deploy:
     name: "Terraform Apply"
