@@ -7,7 +7,7 @@ on:
     inputs:
       tag:
         description: "Sem ver tag name (e.g., v1.2.3 or v1.2.3-rc.1)"
-        required: false
+        required: true
       target:
         description: "Resource to limit plan and import if partial deployment will be done, for example, aws_api_gateway_rest_api.shared_api_gw"
         required: false
