@@ -15,7 +15,7 @@ resource "aws_iam_role" "org" {
             "token.actions.githubusercontent.com:aud" : "sts.amazonaws.com"
           },
           StringLike : {
-            "token.actions.githubusercontent.com:sub" : "repo:murray-tait/aws-org:*:*"
+            "token.actions.githubusercontent.com:sub" : "repo:murray-tait/aws_org:*:*"
           }
         }
       }
@@ -44,7 +44,7 @@ resource "aws_iam_role_policy" "org" {
         ]
         Effect = "Allow"
         Resource = [
-          "arn:aws:s3:::org.murraytait.experiment.build.terraform/env/aws-org/terraform.tfstate",
+          "arn:aws:s3:::org.murraytait.experiment.build.terraform/env/aws-org/org.tfstate",
         ]
       },
       {
@@ -55,7 +55,7 @@ resource "aws_iam_role_policy" "org" {
         ]
         Effect = "Allow"
         Resource = [
-          "arn:aws:s3:::org.murraytait.experiment.build.terraform/env/aws-org/terraform.tfstate.tflock",
+          "arn:aws:s3:::org.murraytait.experiment.build.terraform/env/aws-org/org.tfstate.tflock",
         ]
       },
     ]
